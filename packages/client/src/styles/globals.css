@@ -1,193 +1,107 @@
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
 }
 
 html,
-body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  touch-action: manipulation;
-  overscroll-behavior: none;
+body,
+#root{
+
+    width:100%;
+
+    min-height:100%;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+        radial-gradient(
+            circle at top,
+            #1e293b,
+            #0f172a 60%
+        );
+
+    overflow-x:hidden;
 }
 
-#root {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+body{
+
+    min-height:100vh;
+
+    -webkit-font-smoothing:antialiased;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
+button,
+input{
+
+    font:inherit;
 }
 
-.page {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px;
-  gap: 16px;
-  max-width: 480px;
-  width: 100%;
-  margin: 0 auto;
+button{
+
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
 }
 
-.title {
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 8px 0 0;
+img,
+svg{
+
+    display:block;
+
+    max-width:100%;
 }
 
-.subtitle {
-  color: var(--muted);
-  text-align: center;
-  margin: 0;
+.page{
+
+    width:100%;
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
 }
 
-.btn {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 14px;
-  border: none;
-  background: var(--panel);
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.card{
+
+    background:var(--glass);
+
+    border:var(--glass-border);
+
+    backdrop-filter:blur(var(--blur));
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-lg);
 }
 
-.btn:active {
-  transform: scale(0.98);
+.title{
+
+    font-size:clamp(2rem,4vw,4rem);
+
+    font-weight:800;
+
+    letter-spacing:-1px;
 }
 
-.btn.primary {
-  background: var(--accent);
-  color: #1b1f27;
-}
+.subtitle{
 
-.btn:disabled {
-  opacity: 0.5;
-}
+    color:var(--muted);
 
-.card {
-  background: var(--panel);
-  border-radius: 16px;
-  padding: 16px;
-  width: 100%;
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-input[type='text'] {
-  flex: 1;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid #3a4150;
-  background: #1f232c;
-  color: var(--text);
-  font-size: 1rem;
-}
-
-.player-panel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: 100%;
-}
-
-.player-chip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--panel);
-  font-size: 0.85rem;
-  opacity: 0.6;
-}
-
-.player-chip.active {
-  opacity: 1;
-  outline: 2px solid var(--accent);
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.dot.red {
-  background: var(--red);
-}
-.dot.green {
-  background: var(--green);
-}
-.dot.yellow {
-  background: var(--yellow);
-}
-.dot.blue {
-  background: var(--blue);
-}
-
-.board-wrap {
-  width: 100%;
-  max-width: 480px;
-  aspect-ratio: 1 / 1;
-  touch-action: manipulation;
-}
-
-.dice-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  width: 100%;
-}
-
-.dice {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: #fff;
-  color: #1b1f27;
-  font-size: 1.8rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-}
-
-.dice:disabled {
-  opacity: 0.4;
-}
-
-.status-line {
-  min-height: 24px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.share-link {
-  word-break: break-all;
-  font-size: 0.9rem;
-  color: var(--muted);
-  background: #1f232c;
-  padding: 10px 12px;
-  border-radius: 10px;
+    line-height:1.7;
 }

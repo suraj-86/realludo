@@ -1,118 +1,167 @@
-import React from 'react';
-import { SAFE_CELLS, getValidMoveTokens } from '@ludo/engine';
-import { PATH_COORDS, HOME_COLUMN, CENTER, tokenCoord } from '../../coords.js';
+import React from "react";
+import { SAFE_CELLS, getValidMoveTokens } from "@ludo/engine";
+import { PATH_COORDS, HOME_COLUMN, CENTER, tokenCoord } from "../../coords.js";
 
-const COLOR_HEX = {
-  red: '#e6483c',
-  green: '#3fae4a',
-  yellow: '#e8c33a',
-  blue: '#3b7fe6',
+const COLORS = {
+  red: "#ef4444",
+  green: "#22c55e",
+  yellow: "#facc15",
+  blue: "#3b82f6",
 };
 
-const BASE_RECTS = [
-  { color: 'red', x: 0, y: 0 },
-  { color: 'green', x: 9, y: 0 },
-  { color: 'yellow', x: 9, y: 9 },
-  { color: 'blue', x: 0, y: 9 },
+const BASES = [
+  { color: "red", x: 0, y: 0 },
+  { color: "green", x: 9, y: 0 },
+  { color: "yellow", x: 9, y: 9 },
+  { color: "blue", x: 0, y: 9 },
 ];
 
 export default function Board({ gameState, myColor, onTokenClick }) {
   const validMoves = React.useMemo(() => {
-    if (!gameState || gameState.phase !== 'MOVE') return [];
+    if (!gameState || gameState.phase !== "MOVE") return [];
     return getValidMoveTokens(gameState);
   }, [gameState]);
 
   return (
-    <svg viewBox="0 0 15 15" className="board-svg" style={{ width: '100%', height: '100%' }}>
-      <rect x="0" y="0" width="15" height="15" fill="#f4f1ea" />
+    <svg
+      viewBox="0 0 15 15"
+      className="board-svg"
+      style={{ width: "100%", height: "100%" }}
+    >
+      <rect width="15" height="15" rx="0.3" fill="#f8fafc" />
 
-      {/* Colored corner bases */}
-      {BASE_RECTS.map(({ color, x, y }) => (
+      {/* Bases */}
+      {BASES.map(({ color, x, y }) => (
         <g key={color}>
-          <rect x={x} y={y} width="6" height="6" fill={COLOR_HEX[color]} opacity="0.18" />
           <rect
-            x={x + 0.9}
-            y={y + 0.9}
-            width="4.2"
-            height="4.2"
-            rx="0.4"
-            fill="#fff"
+            x={x}
+            y={y}
+            width="6"
+            height="6"
+            fill={COLORS[color]}
+            opacity=".18"
+          />
+
+          <rect
+            x={x + .7}
+            y={y + .7}
+            width="4.6"
+            height="4.6"
+            rx=".35"
+            fill="white"
+            stroke={COLORS[color]}
+            strokeWidth=".08"
           />
         </g>
       ))}
 
-      {/* Shared 52-cell track */}
-      {PATH_COORDS.map(([row, col], i) => (
+      {/* Track */}
+      {PATH_COORDS.map(([r, c], i) => (
         <rect
-          key={`path-${i}`}
-          x={col}
-          y={row}
+          key={i}
+          x={c}
+          y={r}
           width="1"
           height="1"
-          fill={SAFE_CELLS.includes(i) ? '#e0ddd2' : '#ffffff'}
-          stroke="#cfcabd"
-          strokeWidth="0.03"
+          fill={SAFE_CELLS.includes(i) ? "#dbeafe" : "#ffffff"}
+          stroke="#d1d5db"
+          strokeWidth=".03"
         />
       ))}
+
+      {/* Safe stars */}
       {SAFE_CELLS.map((i) => {
-        const [row, col] = PATH_COORDS[i];
+        const [r, c] = PATH_COORDS[i];
+
         return (
           <text
-            key={`star-${i}`}
-            x={col + 0.5}
-            y={row + 0.72}
-            fontSize="0.6"
+            key={i}
+            x={c + .5}
+            y={r + .68}
             textAnchor="middle"
-            fill="#b8b199"
+            fontSize=".55"
+            fill="#64748b"
           >
             ★
           </text>
         );
       })}
 
-      {/* Home columns */}
+      {/* Home paths */}
       {Object.entries(HOME_COLUMN).map(([color, cells]) =>
-        cells.map(([row, col], i) => (
+        cells.map(([r, c], i) => (
           <rect
-            key={`${color}-home-${i}`}
-            x={col}
-            y={row}
+            key={`${color}-${i}`}
+            x={c}
+            y={r}
             width="1"
             height="1"
-            fill={COLOR_HEX[color]}
-            opacity="0.55"
-            stroke="#ffffff"
-            strokeWidth="0.03"
+            fill={COLORS[color]}
+            opacity=".55"
+            stroke="white"
+            strokeWidth=".03"
           />
         ))
       )}
 
-      {/* Center home */}
-      <rect x={CENTER[1] - 0.5} y={CENTER[0] - 0.5} width="1" height="1" fill="#ddd" />
+      {/* Center */}
+      <polygon
+        points="
+7.5,6
+9,7.5
+7.5,9
+6,7.5
+"
+        fill="#fbbf24"
+        stroke="#ffffff"
+        strokeWidth=".08"
+      />
 
       {/* Tokens */}
       {gameState?.players.map((player) =>
-        player.tokens.map((relPos, tokenIndex) => {
-          const [row, col] = tokenCoord(player.color, relPos, tokenIndex);
-          const isCurrentTurn =
-            gameState.players[gameState.turnIndex]?.color === player.color;
+        player.tokens.map((pos, index) => {
+          const [r, c] = tokenCoord(player.color, pos, index);
+
           const clickable =
-            isCurrentTurn &&
-            gameState.phase === 'MOVE' &&
+            gameState.players[gameState.turnIndex]?.color === player.color &&
+            gameState.phase === "MOVE" &&
             (!myColor || myColor === player.color) &&
-            validMoves.includes(tokenIndex);
+            validMoves.includes(index);
+
           return (
-            <circle
-              key={`${player.color}-${tokenIndex}`}
-              cx={col + 0.5}
-              cy={row + 0.5}
-              r="0.36"
-              fill={COLOR_HEX[player.color]}
-              stroke="#1b1f27"
-              strokeWidth={clickable ? 0.07 : 0.03}
-              style={{ cursor: clickable ? 'pointer' : 'default' }}
-              onClick={() => clickable && onTokenClick?.(tokenIndex)}
-            />
+            <g
+              key={`${player.color}-${index}`}
+              onClick={() => clickable && onTokenClick?.(index)}
+              style={{
+                cursor: clickable ? "pointer" : "default",
+              }}
+            >
+              {clickable && (
+                <circle
+                  cx={c + .5}
+                  cy={r + .5}
+                  r=".46"
+                  fill={COLORS[player.color]}
+                  opacity=".25"
+                />
+              )}
+
+              <circle
+                cx={c + .5}
+                cy={r + .5}
+                r=".34"
+                fill={COLORS[player.color]}
+                stroke="white"
+                strokeWidth=".06"
+              />
+
+              <circle
+                cx={c + .38}
+                cy={r + .38}
+                r=".09"
+                fill="rgba(255,255,255,.65)"
+              />
+            </g>
           );
         })
       )}

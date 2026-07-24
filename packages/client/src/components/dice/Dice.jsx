@@ -1,26 +1,95 @@
-import React from 'react';
+import { motion } from "framer-motion";
 
-const PIP_LAYOUTS = {
-  1: [[50, 50]],
-  2: [[25, 25], [75, 75]],
-  3: [[25, 25], [50, 50], [75, 75]],
-  4: [[25, 25], [75, 25], [25, 75], [75, 75]],
-  5: [[25, 25], [75, 25], [50, 50], [25, 75], [75, 75]],
-  6: [[25, 25], [75, 25], [25, 50], [75, 50], [25, 75], [75, 75]],
+const PIPS={
+
+1:[[50,50]],
+
+2:[[28,28],[72,72]],
+
+3:[[28,28],[50,50],[72,72]],
+
+4:[[28,28],[72,28],[28,72],[72,72]],
+
+5:[[28,28],[72,28],[50,50],[28,72],[72,72]],
+
+6:[[28,28],[72,28],[28,50],[72,50],[28,72],[72,72]]
+
 };
 
-export default function Dice({ value, canRoll, onRoll }) {
-  return (
-    <button className="dice" disabled={!canRoll} onClick={onRoll} aria-label="Roll dice">
-      {value ? (
-        <svg viewBox="0 0 100 100" width="60%" height="60%">
-          {PIP_LAYOUTS[value].map(([cx, cy], i) => (
-            <circle key={i} cx={cx} cy={cy} r="9" fill="#1b1f27" />
-          ))}
-        </svg>
-      ) : (
-        '?'
-      )}
-    </button>
-  );
+export default function Dice({value}){
+
+    if(!value){
+
+        return null;
+
+    }
+
+    return(
+
+        <motion.svg
+
+            viewBox="0 0 100 100"
+
+            initial={{
+                rotate:-180,
+                scale:.5
+            }}
+
+            animate={{
+                rotate:0,
+                scale:1
+            }}
+
+            transition={{
+                duration:.35
+            }}
+
+            width="100%"
+
+            height="100%"
+
+        >
+
+            <rect
+
+                x="6"
+
+                y="6"
+
+                width="88"
+
+                height="88"
+
+                rx="18"
+
+                fill="#ffffff"
+
+            />
+
+            {
+
+                PIPS[value].map(([cx,cy],i)=>(
+
+                    <circle
+
+                        key={i}
+
+                        cx={cx}
+
+                        cy={cy}
+
+                        r="8"
+
+                        fill="#111827"
+
+                    />
+
+                ))
+
+            }
+
+        </motion.svg>
+
+    );
+
 }

@@ -1,11 +1,15 @@
-// board.js — pure board geometry/math. No rendering, no state mutation.
+// board.js
+// Pure board geometry helpers.
+// No game state mutation.
+// Safe to import from both the client and the server.
 
-export const COLORS = ['red', 'green', 'yellow', 'blue'];
+export const COLORS = [
+  "red",
+  "green",
+  "yellow",
+  "blue",
+];
 
-// Absolute index (0-51) on the shared 52-cell outer track where each
-// color's token enters the track after leaving its yard.
-// Colors are spaced 13 apart (52 / 4 colors) and laid out clockwise:
-// red (top-left) -> green (top-right) -> yellow (bottom-right) -> blue (bottom-left).
 export const START_OFFSET = {
   red: 0,
   green: 13,
@@ -13,35 +17,53 @@ export const START_OFFSET = {
   blue: 39,
 };
 
-// Cells that are "safe" — a token sitting here cannot be captured.
-// Standard Ludo: each color's own start square, plus one star cell
-// roughly opposite each start.
-export const SAFE_CELLS = [0, 8, 13, 21, 26, 34, 39, 47];
+export const SAFE_CELLS = [
+  0,
+  8,
+  13,
+  21,
+  26,
+  34,
+  39,
+  47,
+];
 
-// A token's position is tracked as a single integer, relative to its
-// own color, called `relPos`:
-//   0            -> still in the yard (not on the board)
-//   1 - 51       -> on the shared outer track (51 relative steps)
-//   52 - 56      -> in this color's private home column (5 cells)
-//   57 (FINISH)  -> home / finished
 export const PATH_LENGTH = 51;
+
 export const HOME_LENGTH = 6;
-export const FINISH = PATH_LENGTH + HOME_LENGTH; // 57
+
+export const FINISH = PATH_LENGTH + HOME_LENGTH;
 
 /**
- * Convert a color + relative position (1-51) into an absolute cell
- * index (0-51) on the shared outer track. Returns null if the token
- * is in the yard or already in its home column (i.e. not on the
- * shared track, so it can't be captured / doesn't share a cell with
- * other colors).
+ * Convert a relative position to an absolute board cell.
+ *
+ * Yard -> null
+ * Home column -> null
+ * Finish -> null
  */
 export function absoluteCell(color, relPos) {
-  if (relPos < 1 || relPos > PATH_LENGTH) return null;
-  return (START_OFFSET[color] + relPos - 1) % 52;
+  if (relPos < 1 || relPos > PATH_LENGTH) {
+    return null;
+  }
+
+  return (
+    (START_OFFSET[color] + relPos - 1) %
+    52
+  );
 }
 
-export function isSafeAbsoluteCell(absCell) {
-  return SAFE_CELLS.includes(absCell);
+export function relativeFromAbsolute(
+  color,
+  absolute
+) {
+  return (
+    ((absolute - START_OFFSET[color] + 52) % 52) +
+    1
+  );
+}
+
+export function isSafeAbsoluteCell(cell) {
+  return SAFE_CELLS.includes(cell);
 }
 
 export function isInYard(relPos) {
@@ -49,13 +71,80 @@ export function isInYard(relPos) {
 }
 
 export function isOnSharedTrack(relPos) {
-  return relPos >= 1 && relPos <= PATH_LENGTH;
+  return (
+    relPos >= 1 &&
+    relPos <= PATH_LENGTH
+  );
 }
 
 export function isInHomeColumn(relPos) {
-  return relPos > PATH_LENGTH && relPos < FINISH;
+  return (
+    relPos > PATH_LENGTH &&
+    relPos < FINISH
+  );
 }
 
 export function isFinished(relPos) {
   return relPos === FINISH;
 }
+
+export function isHomeEntry(relPos) {
+  return relPos === PATH_LENGTH;
+}
+
+export function canEnterHome(relPos, dice) {
+  return (
+    relPos >= PATH_LENGTH &&
+    relPos + dice <= FINISH
+  );
+}
+
+export function nextRelativePosition(
+  relPos,
+  dice
+) {
+  if (isFinished(relPos)) {
+    return relPos;
+  }
+
+  return Math.min(
+    relPos + dice,
+    FINISH
+  );
+}
+
+export function tokenState(relPos) {
+  if (isInYard(relPos)) {
+    return "yard";
+  }
+
+  if (isFinished(relPos)) {
+    return "finish";
+  }
+
+  if (isInHomeColumn(relPos)) {
+    return "home";
+  }
+
+  return "track";
+}
+
+export default {
+  COLORS,
+  START_OFFSET,
+  SAFE_CELLS,
+  PATH_LENGTH,
+  HOME_LENGTH,
+  FINISH,
+  absoluteCell,
+  relativeFromAbsolute,
+  isSafeAbsoluteCell,
+  isInYard,
+  isOnSharedTrack,
+  isInHomeColumn,
+  isFinished,
+  isHomeEntry,
+  canEnterHome,
+  nextRelativePosition,
+  tokenState,
+};

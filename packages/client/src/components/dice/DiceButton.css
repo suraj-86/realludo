@@ -1,41 +1,66 @@
 .dice-button{
 
-    width:72px;
+    width:88px;
 
-    height:72px;
+    height:88px;
 
     border:none;
 
-    border-radius:20px;
+    border-radius:24px;
 
-    background:linear-gradient(
-        180deg,
-        #ffffff,
-        #ececec
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #ececec
+        );
 
-    color:#222;
+    color:#111827;
 
-    font-size:36px;
+    font-size:48px;
+
+    font-weight:700;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     cursor:pointer;
 
     box-shadow:
-        0 8px 20px rgba(0,0,0,.25);
+        0 12px 30px rgba(0,0,0,.28);
 
-    transition:.25s;
+    transition:
+        transform .25s,
+        box-shadow .25s;
+}
+
+.dice-button:hover{
+
+    transform:translateY(-4px);
 }
 
 .dice-button.active{
 
     box-shadow:
-        0 0 24px rgba(255,215,0,.5),
-        0 8px 20px rgba(0,0,0,.3);
+        0 0 28px rgba(250,204,21,.55),
+        0 15px 35px rgba(0,0,0,.35);
 }
 
 .dice-button:disabled{
 
-    opacity:.85;
+    opacity:.55;
 
     cursor:default;
+
+    transform:none;
+}
+
+.dice-value{
+
+    user-select:none;
+
+    line-height:1;
 }

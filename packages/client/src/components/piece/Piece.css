@@ -1,0 +1,109 @@
+.piece {
+    position: absolute;
+    width: 72%;
+    height: 72%;
+    border-radius: 50% 50% 48% 48%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        left .25s linear,
+        top .25s linear;
+    box-shadow:
+        0 6px 14px rgba(0,0,0,.35),
+        inset 0 2px 6px rgba(255,255,255,.45);
+}
+
+.piece::before{
+    content:"";
+    position:absolute;
+    width:45%;
+    height:25%;
+    top:10%;
+    left:18%;
+    border-radius:50%;
+    background:rgba(255,255,255,.45);
+    filter:blur(1px);
+}
+
+.piece.red{
+    background:linear-gradient(180deg,#ff7b7b,#dc2626);
+}
+
+.piece.green{
+    background:linear-gradient(180deg,#86efac,#16a34a);
+}
+
+.piece.yellow{
+    background:linear-gradient(180deg,#fde68a,#eab308);
+}
+
+.piece.blue{
+    background:linear-gradient(180deg,#93c5fd,#2563eb);
+}
+
+.piece.selectable{
+    animation:piecePulse .8s infinite;
+}
+
+.piece:hover{
+    transform:scale(1.12);
+}
+
+.piece.selected{
+    transform:scale(1.18);
+    box-shadow:
+        0 0 18px rgba(255,255,255,.55),
+        0 0 26px currentColor;
+}
+
+.piece.moving{
+    transition:
+        left .35s ease,
+        top .35s ease,
+        transform .35s ease;
+}
+
+.piece.capture{
+    animation:capture .45s ease;
+}
+
+.piece.home{
+    animation:home .45s ease;
+}
+
+@keyframes piecePulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.12);
+    }
+}
+
+@keyframes capture{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.35);
+    }
+    100%{
+        transform:scale(0);
+        opacity:0;
+    }
+}
+
+@keyframes home{
+    0%{
+        transform:scale(.4);
+        opacity:0;
+    }
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+}

@@ -9,24 +9,34 @@ export default function GameLayout({
   status,
 }) {
   return (
-    <div className="game-layout">
-      <div className="top-row">
-        <div className="player-area">{topLeft}</div>
-        <div className="player-area">{topRight}</div>
-      </div>
+    <main className="game-layout">
+      <section className="top-row">
+        <div className="player-area">
+          {topLeft}
+        </div>
 
-      <div className="board-area">
+        <div className="player-area">
+          {topRight}
+        </div>
+      </section>
+
+      <section className="board-area">
         {board}
-      </div>
+      </section>
 
-      <div className="bottom-row">
-        <div className="player-area">{bottomLeft}</div>
-        <div className="player-area">{bottomRight}</div>
-      </div>
+      <section className="bottom-row">
+        <div className="player-area">
+          {bottomLeft}
+        </div>
 
-      <div className="status-area">
+        <div className="player-area">
+          {bottomRight}
+        </div>
+      </section>
+
+      <section className="status-area">
         {status}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
