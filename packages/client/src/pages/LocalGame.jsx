@@ -1,63 +1,79 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Board from '../components/Board.jsx';
-import Dice from '../components/Dice.jsx';
-import PlayerPanel from '../components/PlayerPanel.jsx';
-import { useLocalGame } from '../hooks/useLocalGame.js';
+import { useParams } from "react-router-dom";
 
-function statusText(state, mode) {
-  if (state.winner) {
-    const winner = state.players.find((p) => p.color === state.winner);
-    return `${winner.name} wins! 🎉`;
-  }
-  const player = state.players[state.turnIndex];
-  const who = mode === 'pass' ? player.name : player.isBot ? player.name : 'Your';
-  if (state.phase === 'ROLL') return `${who} turn — roll the dice`;
-  return `${who} — pick a token to move`;
-}
+import BoardContainer from "../components/board/BoardContainer";
+import GameLayout from "../components/layout/GameLayout";
+import PlayerCard from "../components/player/PlayerCard";
+import DiceButton from "../components/dice/DiceButton";
 
-function LocalGameBoard({ mode, playerCount }) {
-  const { state, roll, move } = useLocalGame(mode, playerCount);
-  const currentPlayer = state.players[state.turnIndex];
-  const canRoll = state.phase === 'ROLL' && !currentPlayer.isBot && !state.winner;
-
-  return (
-    <div className="page">
-      <PlayerPanel players={state.players} turnIndex={state.turnIndex} />
-      <div className="board-wrap">
-        <Board gameState={state} onTokenClick={move} />
-      </div>
-      <div className="dice-area">
-        <Dice value={state.dice} canRoll={canRoll} onRoll={roll} />
-      </div>
-      <p className="status-line">{statusText(state, mode)}</p>
-    </div>
-  );
-}
+import useLocalGame from "../hooks/useLocalGame";
 
 export default function LocalGame() {
-  const { mode } = useParams(); // 'pass' | 'bot'
-  const navigate = useNavigate();
-  const [playerCount, setPlayerCount] = useState(null);
+  const { mode = "pass" } = useParams();
 
-  if (!playerCount) {
-    return (
-      <div className="page">
-        <h1 className="title">{mode === 'bot' ? 'Vs Bot' : 'Pass & Play'}</h1>
-        <p className="subtitle">How many players?</p>
-        <div className="card" style={{ display: 'flex', gap: 8 }}>
-          {[2, 3, 4].map((n) => (
-            <button key={n} className="btn primary" onClick={() => setPlayerCount(n)}>
-              {n}
-            </button>
-          ))}
-        </div>
-        <button className="btn" onClick={() => navigate('/')}>
-          Back
-        </button>
-      </div>
-    );
-  }
+  const {
+    players,
+    board,
+    currentPlayer,
+    lastRoll,
+    canRoll,
+    move,
+    roll,
+    winner,
+  } = useLocalGame(mode);
 
-  return <LocalGameBoard mode={mode} playerCount={playerCount} />;
+  return (
+    <GameLayout
+      topLeft={
+        <PlayerCard
+          player={players?.[1]}
+          active={currentPlayer === 1}
+        />
+      }
+      topRight={
+        <DiceButton
+          value={lastRoll}
+          canRoll={canRoll}
+          onRoll={roll}
+        />
+      }
+      board={
+        <BoardContainer
+          board={board}
+          players={players}
+          currentPlayer={currentPlayer}
+          onPawnClick={move}
+        />
+      }
+      bottomLeft={
+        <PlayerCard
+          player={players?.[0]}
+          active={currentPlayer === 0}
+        />
+      }
+      bottomRight={
+        <PlayerCard
+          player={players?.[2]}
+          active={currentPlayer === 2}
+        />
+      }
+      status={
+        winner ? (
+          <div
+            style={{
+              fontWeight: 700,
+              fontSize: 18,
+              color: "#fff",
+            }}
+          >
+            🏆 {winner.name} Wins
+          </div>
+        ) : (
+          <PlayerCard
+            player={players?.[3]}
+            active={currentPlayer === 3}
+          />
+        )
+      }
+    />
+  );
 }

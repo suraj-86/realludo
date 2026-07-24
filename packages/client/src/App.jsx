@@ -1,8 +1,8 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home.jsx';
-import LocalGame from './pages/LocalGame.jsx';
-import OnlineRoom from './pages/OnlineRoom.jsx';
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import LocalGame from "./pages/LocalGame";
+import OnlineRoom from "./pages/OnlineRoom";
 
 export default function App() {
   return (
@@ -10,6 +10,7 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/local/:mode" element={<LocalGame />} />
       <Route path="/room/:roomId" element={<OnlineRoom />} />
+      <Route path="*" element={<Home />} />
     </Routes>
   );
 }

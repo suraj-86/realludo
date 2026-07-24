@@ -1,3 +1,3 @@
-export * from './board.js';
-export * from './rules.js';
-export * from './botAI.js';
+export * from "./board.js";
+export * from "./rules.js";
+export * from "./botAI.js";

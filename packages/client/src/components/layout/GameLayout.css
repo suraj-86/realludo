@@ -1,0 +1,61 @@
+.game-layout{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+    padding:12px;
+    background:#0b1220;
+}
+
+.top-row{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.bottom-row{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.player-area{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.board-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.status-area{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:8px;
+}
+
+.status-line{
+    color:#94a3b8;
+    font-weight:600;
+    font-size:.9rem;
+}
+
+@media (min-width:768px){
+
+.game-layout{
+    max-width:430px;
+    margin:auto;
+}
+
+}

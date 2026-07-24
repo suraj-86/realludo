@@ -1,55 +1,87 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ensureConnected, socket } from '../net/socket.js';
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [creating, setCreating] = useState(false);
-
-  const createOnlineRoom = () => {
-    setCreating(true);
-    ensureConnected();
-    socket.emit('create-room', { name: name || undefined }, (res) => {
-      setCreating(false);
-      if (!res?.ok) return alert(res?.error || 'Could not create room');
-      sessionStorage.setItem(
-        `ludo-room-${res.roomId}`,
-        JSON.stringify({ playerId: res.playerId, color: res.color })
-      );
-      navigate(`/room/${res.roomId}`);
-    });
-  };
 
   return (
     <div className="page">
-      <h1 className="title">🎲 Ludo</h1>
-      <p className="subtitle">No sign-up. Pick a mode and play.</p>
+      <motion.div
+        className="card"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+        style={{
+          width: "min(560px,100%)",
+          padding: "48px",
+          textAlign: "center",
+        }}
+      >
+        <motion.h1
+          className="title"
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+        >
+          LUDO
+        </motion.h1>
 
-      <button className="btn primary" onClick={() => navigate('/local/pass')}>
-        Pass &amp; Play (same device)
-      </button>
-      <button className="btn primary" onClick={() => navigate('/local/bot')}>
-        Vs Bot
-      </button>
-
-      <div className="card">
-        <p className="subtitle" style={{ margin: '0 0 10px' }}>
-          Play online with friends — share a link, no account needed.
+        <p
+          className="subtitle"
+          style={{
+            marginTop: 18,
+            marginBottom: 40,
+          }}
+        >
+          Beautiful local and online multiplayer powered by a shared game
+          engine.
         </p>
-        <div className="row" style={{ marginBottom: 10 }}>
-          <input
-            type="text"
-            placeholder="Your name (optional)"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={20}
-          />
+
+        <div
+          style={{
+            display: "grid",
+            gap: 18,
+          }}
+        >
+          <button
+            className="card"
+            style={{
+              padding: "20px",
+              fontSize: "1.05rem",
+              fontWeight: 700,
+            }}
+            onClick={() => navigate("/local/pass")}
+          >
+            🎮 Local Multiplayer
+          </button>
+
+          <button
+            className="card"
+            style={{
+              padding: "20px",
+              fontSize: "1.05rem",
+              fontWeight: 700,
+            }}
+            onClick={() => navigate("/local/bot")}
+          >
+            🤖 Play vs Bots
+          </button>
+
+          <button
+            className="card"
+            style={{
+              padding: "20px",
+              fontSize: "1.05rem",
+              fontWeight: 700,
+            }}
+            onClick={() => {
+              const room = crypto.randomUUID().slice(0, 6).toUpperCase();
+              navigate(`/room/${room}`);
+            }}
+          >
+            🌐 Online Game
+          </button>
         </div>
-        <button className="btn primary" onClick={createOnlineRoom} disabled={creating}>
-          {creating ? 'Creating room…' : 'Create Online Room'}
-        </button>
-      </div>
+      </motion.div>
     </div>
   );
 }

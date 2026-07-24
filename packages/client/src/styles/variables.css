@@ -1,0 +1,61 @@
+:root {
+
+    /* Backgrounds */
+    --bg:#0f172a;
+    --bg-secondary:#111827;
+    --panel:rgba(255,255,255,.08);
+    --panel-hover:rgba(255,255,255,.12);
+
+    /* Text */
+    --text:#f8fafc;
+    --muted:#94a3b8;
+
+    /* Accent */
+    --accent:#facc15;
+    --accent-dark:#eab308;
+
+    /* Player Colors */
+    --red:#ef4444;
+    --green:#22c55e;
+    --yellow:#facc15;
+    --blue:#3b82f6;
+
+    /* Borders */
+    --border:rgba(255,255,255,.08);
+
+    /* Radius */
+    --radius-xs:8px;
+    --radius-sm:14px;
+    --radius-md:20px;
+    --radius-lg:28px;
+    --radius-xl:36px;
+
+    /* Shadows */
+    --shadow-sm:
+        0 8px 18px rgba(0,0,0,.15);
+
+    --shadow-md:
+        0 15px 35px rgba(0,0,0,.25);
+
+    --shadow-lg:
+        0 30px 80px rgba(0,0,0,.40);
+
+    /* Glass */
+    --glass:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.10),
+            rgba(255,255,255,.04)
+        );
+
+    --glass-border:
+        1px solid rgba(255,255,255,.08);
+
+    --blur:22px;
+
+    /* Animation */
+    --fast:.18s;
+    --normal:.28s;
+    --slow:.45s;
+
+}
