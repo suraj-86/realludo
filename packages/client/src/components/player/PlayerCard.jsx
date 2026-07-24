@@ -1,4 +1,5 @@
 import "./PlayerCard.css";
+import DiceButton from "../dice/DiceButton";
 
 export default function PlayerCard({
   player,
@@ -20,28 +21,30 @@ export default function PlayerCard({
       <div className="player-header">
         <div className={`player-color ${player.color}`} />
 
-        <div>
+        <div className="player-info">
           <h3>{player.name}</h3>
 
-          <p className="player-type">
-            {player.isBot ? "Bot" : "Human"}
-          </p>
+          <span className="player-type">
+            {player.isBot ? "🤖 Bot" : "👤 Human"}
+          </span>
         </div>
       </div>
 
       <div className="player-center">
-        {canRoll ? (
-          <button
-            className="dice-button"
-            onClick={onRoll}
-          >
-            🎲
-          </button>
-        ) : (
-          <div className="dice-preview">
-            {dice ?? "—"}
-          </div>
-        )}
+        <DiceButton
+          value={dice}
+          canRoll={canRoll}
+          onRoll={onRoll}
+        />
+      </div>
+
+      <div className="pawn-row">
+        {[0, 1, 2, 3].map((i) => (
+          <span
+            key={i}
+            className={`pawn ${player.color}`}
+          />
+        ))}
       </div>
 
       <div className="player-status">

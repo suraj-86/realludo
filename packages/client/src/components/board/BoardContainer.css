@@ -1,0 +1,38 @@
+.board-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:100%;
+}
+
+.board-inner{
+
+    padding:24px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.05),
+            rgba(255,255,255,.02)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(16px);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.35);
+
+    transition:.3s;
+}
+
+.board-inner:hover{
+
+    transform:translateY(-3px);
+}

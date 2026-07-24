@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Board from "../components/board/Board.jsx";
+import BoardContainer from "../components/board/BoardContainer.jsx";
 import GameLayout from "../components/layout/GameLayout.jsx";
 import PlayerCard from "../components/player/PlayerCard.jsx";
 
@@ -61,12 +62,12 @@ function LocalGameBoard({ mode, playerCount }) {
           />
         }
         board={
-          <div className="board-wrap">
+          <BoardContainer>
             <Board
               gameState={state}
               onTokenClick={move}
             />
-          </div>
+          </BoardContainer>
         }
         bottomLeft={
           <PlayerCard
