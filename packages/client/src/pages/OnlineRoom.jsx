@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Board from '../components/Board.jsx';
-import Dice from '../components/Dice.jsx';
-import PlayerPanel from '../components/PlayerPanel.jsx';
+import Board from '../components/board/Board.jsx';
+import Dice from '../components/dice/Dice.jsx';
+import PlayerPanel from '../components/player/PlayerPanel.jsx';
 import { ensureConnected, socket } from '../net/socket.js';
 
 function loadIdentity(roomId) {

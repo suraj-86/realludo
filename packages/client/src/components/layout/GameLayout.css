@@ -1,0 +1,46 @@
+.game-layout{
+    width:100%;
+    max-width:950px;
+
+    margin:0 auto;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:24px;
+}
+
+.top-row,
+.bottom-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:24px;
+}
+
+.player-area{
+
+    flex:1;
+
+    min-height:110px;
+}
+
+.board-area{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.status-area{
+
+    display:flex;
+
+    justify-content:center;
+
+    min-height:32px;
+}
