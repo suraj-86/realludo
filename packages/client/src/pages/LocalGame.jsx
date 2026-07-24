@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Board from '../components/Board.jsx';
+import Board from '../components/board/Board.jsx';
 import Dice from '../components/Dice.jsx';
 import PlayerPanel from '../components/PlayerPanel.jsx';
 import { useLocalGame } from '../hooks/useLocalGame.js';
@@ -22,25 +22,24 @@ function LocalGameBoard({ mode, playerCount }) {
   const canRoll = state.phase === 'ROLL' && !currentPlayer.isBot && !state.winner;
 
   return (
-  <div className="page game-page">
-    <PlayerPanel
-      players={state.players}
-      turnIndex={state.turnIndex}
-    />
+  <div className="page game-layout">
+  <div className="players-row top">
+  <div className="player-slot"></div>
+  <div className="player-slot"></div>
+</div>
 
-    <div className="board-wrap">
-      <Board gameState={state} onTokenClick={move} />
-    </div>
+<div className="board-wrap">
+  <Board gameState={state} onTokenClick={move} />
+</div>
 
-    <div className="dice-area">
-      <Dice
-        value={state.dice}
-        canRoll={canRoll}
-        onRoll={roll}
-      />
-    </div>
+<div className="players-row bottom">
+  <div className="player-slot"></div>
+  <div className="player-slot"></div>
+</div>
 
-    <p className="status-line">{statusText(state, mode)}</p>
+<p className="status-line">
+  {statusText(state, mode)}
+</p>
   </div>
 );
 }

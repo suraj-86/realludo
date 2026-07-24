@@ -1,6 +1,6 @@
 import React from 'react';
 import { SAFE_CELLS, getValidMoveTokens } from '@ludo/engine';
-import { PATH_COORDS, HOME_COLUMN, CENTER, tokenCoord } from '../coords.js';
+import { PATH_COORDS, HOME_COLUMN, CENTER, tokenCoord } from '../../coords.js';
 
 const COLOR_HEX = {
   red: '#e6483c',
