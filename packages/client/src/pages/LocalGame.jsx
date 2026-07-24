@@ -22,17 +22,27 @@ function LocalGameBoard({ mode, playerCount }) {
   const canRoll = state.phase === 'ROLL' && !currentPlayer.isBot && !state.winner;
 
   return (
-    <div className="page">
-      <PlayerPanel players={state.players} turnIndex={state.turnIndex} />
-      <div className="board-wrap">
-        <Board gameState={state} onTokenClick={move} />
-      </div>
-      <div className="dice-area">
-        <Dice value={state.dice} canRoll={canRoll} onRoll={roll} />
-      </div>
-      <p className="status-line">{statusText(state, mode)}</p>
+  <div className="page game-page">
+    <PlayerPanel
+      players={state.players}
+      turnIndex={state.turnIndex}
+    />
+
+    <div className="board-wrap">
+      <Board gameState={state} onTokenClick={move} />
     </div>
-  );
+
+    <div className="dice-area">
+      <Dice
+        value={state.dice}
+        canRoll={canRoll}
+        onRoll={roll}
+      />
+    </div>
+
+    <p className="status-line">{statusText(state, mode)}</p>
+  </div>
+);
 }
 
 export default function LocalGame() {
