@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Board from "../components/board/Board.jsx";
 import GameLayout from "../components/layout/GameLayout.jsx";
+import PlayerCard from "../components/player/PlayerCard.jsx";
 
 import { useLocalGame } from "../hooks/useLocalGame.js";
 
@@ -13,6 +14,7 @@ function statusText(state, mode) {
   }
 
   const player = state.players[state.turnIndex];
+
   const who =
     mode === "pass"
       ? player.name
@@ -28,20 +30,62 @@ function statusText(state, mode) {
 }
 
 function LocalGameBoard({ mode, playerCount }) {
-  const { state, move } = useLocalGame(mode, playerCount);
+  const { state, move, roll } = useLocalGame(mode, playerCount);
+
+  const players = state.players;
+
+  const canRoll = (index) =>
+    state.turnIndex === index &&
+    state.phase === "ROLL" &&
+    !state.winner;
 
   return (
     <div className="page game-page">
       <GameLayout
-        topLeft={<div>🔴 Top Left</div>}
-        topRight={<div>🟢 Top Right</div>}
+        topLeft={
+          <PlayerCard
+            player={players[0]}
+            active={state.turnIndex === 0}
+            dice={state.dice}
+            canRoll={canRoll(0)}
+            onRoll={roll}
+          />
+        }
+        topRight={
+          <PlayerCard
+            player={players[1]}
+            active={state.turnIndex === 1}
+            dice={state.dice}
+            canRoll={canRoll(1)}
+            onRoll={roll}
+          />
+        }
         board={
           <div className="board-wrap">
-            <Board gameState={state} onTokenClick={move} />
+            <Board
+              gameState={state}
+              onTokenClick={move}
+            />
           </div>
         }
-        bottomLeft={<div>🟡 Bottom Left</div>}
-        bottomRight={<div>🔵 Bottom Right</div>}
+        bottomLeft={
+          <PlayerCard
+            player={players[2]}
+            active={state.turnIndex === 2}
+            dice={state.dice}
+            canRoll={canRoll(2)}
+            onRoll={roll}
+          />
+        }
+        bottomRight={
+          <PlayerCard
+            player={players[3]}
+            active={state.turnIndex === 3}
+            dice={state.dice}
+            canRoll={canRoll(3)}
+            onRoll={roll}
+          />
+        }
         status={
           <p className="status-line">
             {statusText(state, mode)}
@@ -65,7 +109,9 @@ export default function LocalGame() {
           {mode === "bot" ? "Vs Bot" : "Pass & Play"}
         </h1>
 
-        <p className="subtitle">How many players?</p>
+        <p className="subtitle">
+          How many players?
+        </p>
 
         <div
           className="card"
@@ -85,12 +131,20 @@ export default function LocalGame() {
           ))}
         </div>
 
-        <button className="btn" onClick={() => navigate("/")}>
+        <button
+          className="btn"
+          onClick={() => navigate("/")}
+        >
           Back
         </button>
       </div>
     );
   }
 
-  return <LocalGameBoard mode={mode} playerCount={playerCount} />;
+  return (
+    <LocalGameBoard
+      mode={mode}
+      playerCount={playerCount}
+    />
+  );
 }
