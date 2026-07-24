@@ -1,0 +1,13 @@
+{
+  "name": "ludo-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev --workspace=@ludo/server",
+    "dev:client": "npm run dev --workspace=@ludo/client",
+    "install:all": "npm install"
+  }
+}
